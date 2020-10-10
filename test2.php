@@ -1,4 +1,21 @@
-<!DOCTYPE html>
+<?php
+
+$databaseHost='localhost';
+$databaseName='test';
+$databaseUsername='root';
+$databasePassword='';
+$cont=mysqli_connect($databaseHost,$databaseUsername,$databasePassword,$databaseName);
+if(!$cont){
+	die("Connection failed: ".mysqli_connect_error());
+}
+else{
+ echo"Connected Successfully";
+}
+
+
+?>
+
+<!doctype html>
 <html lang="en">
   <head>
     <!-- Required meta tags -->
@@ -18,7 +35,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="collapsibleNavId">
-        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
                 <li class="nav-item active">
                     <a class="nav-link" href="test2.php">Home <span class="sr-only">(current)</span></a>
                 </li>
@@ -39,56 +56,109 @@
                     </div>
                 </li>
             </ul>
-            <form class="form-inline my-2 my-lg-0" action="" method="post">
-                <input class="form-control mr-sm-2" type="text" placeholder="Search">
+            <form class="form-inline my-2 my-lg-0"action="" method="post">
+                <input class="form-control mr-sm-2" type="text" name ="bookdata" placeholder="Title/Aurher name/ISBN">
                 <button class="btn btn-outline-success my-2 my-sm-0" type="submit" name="search" >Search Book</button>
             </form>
         </div>
     </nav>
-    <div class=" d-flex justify-content-center"><p class="pt-5 font-weight-bolder userfont">Delete Book Information</p></div>
-    <form action="" method="post">
-    
-                <input class="form-control mr-sm-2" type="text" name="isbn" placeholder="Enter ISBN NUmber">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit" name="delete" >Delete Book</button>
-    </form>
+    <?php
+          if(isset($_POST['search'])){
+            $on=$_POST['bookdata'];
+            $query = "SELECT * FROM tbl_book WHERE name= '$on' or pbdate='$on' or isbn='$on'";
+            $data=mysqli_query($cont,$query);
+            if($data){
+            $track_data = mysqli_fetch_assoc($data);
+            
+        ?>
+        
+        <div class=" d-flex justify-content-center"><p class="pt-5 font-weight-bolder userfont">Book Information</p>
+                                    </div>
+
+    <table class="table table-bordered text-center mt-5">
+      <!--<thead>
+        <tr>
+          <th>Process</th>
+          <th>Status</th>
+        </tr>
+      </thead>-->
+      <tbody>
+      
+        <tr>
+          <td class="py-5">Book Name</td>
+          <td class="py-5"><?php echo $track_data['name'];?></td>
+        </tr>
+        <tr>
+          <td class="py-5">Publisher Name</td>
+          <td class="py-5"><?php echo $track_data['pbname'];?></td>
+        </tr>
+        <tr>
+          <td class="py-5">Author Name</td>
+          <td class="py-5"><?php echo $track_data['pbdate'];?></td>
+        </tr>
+        <tr>
+          <td class="py-5">ISBN</td>
+          <td class="py-5"><?php echo $track_data['isbn'];?></td>
+        </tr>
+        <tr>
+          <td class="py-5">Edition</td>
+          <td class="py-5"><?php echo $track_data['edition'];?></td>
+        </tr>
+        
+      </tbody>
+      <?php
+      //  }
+      ?>
+    </table>
+            <?php }
+            else{  ?>
+    <p class="text-center">NO Order Found!</p>
+   <?php } 
+   }
+   ?>
+
     <form action="" method="post">
                                 <div class="container box pb-3">
-                                    <div class=" d-flex justify-content-center"><p class="pt-5 font-weight-bolder userfont">ADD BOOK</p>
+                                    <div class=" d-flex justify-content-center"><p class="pt-5 font-weight-bolder userfont">User Registration</p>
                                     </div>
                                     <div class="my-2 boxinfo ">
-                                        <input type="text"  placeholder="Enter Your Book Name" name="bookName" id="userName" autocomplete="off">
+                                        <input type="text"  placeholder="Enter Your Full Name" name="userName" id="userName" autocomplete="off">
                                         <span id="userNameMess" class="text-danger"></span>
                                     </div>
                                     <div class="my-2 boxinfo ">
-                                        <input type="text"  placeholder="Enter Publisher name" name="pbname"  >
+                                        <input type="email"  placeholder="Enter Your Email" name="userEmail" id="userEmail" autocomplete="off" >
                                         <span id="userEmailMess" class="text-danger"></span>
                                     </div>
-        
-                                    <div class=" my-2 boxinfo">
-                                        <input type="text"  placeholder="Author Name" name="pbdate" >
-                                        <span id="userNumMess" class="text-danger"></span>
+                                    <div class=" my-2 boxinfo" >
+                                        <textarea class=""  rows="3" placeholder="Enter Your Address" name="userAdd" id="nameAdd" autocomplete="off" ></textarea>
+                                        <span id="userAddMess" class="text-danger"></span>
                                     </div>
                                     <div class=" my-2 boxinfo">
-                                        <input type="text"  placeholder="Subject Name" name="sub" >
+                                        <input type="text"  placeholder="Enter Your Number" name="userNum" id="userNum" autocomplete="off">
                                         <span id="userNumMess" class="text-danger"></span>
                                     </div>
                                     <div class="my-2 boxinfo" >
-                                        <input type="text" placeholder="Enter editin" name="edition" id="" >
+                                        <input type="text" placeholder="Enter Street" name="street" id="" >
                                         <span id="userpassMess" class="text-danger"></span>
                                     </div>
                                     <div class=" my-2 boxinfo">
-                                        <input type="text"  placeholder="Enter ISBN number" name="isbn">
+                                        <input type="text"  placeholder="Enter Your City" name="city">
                                         <span id="userNumMess" class="text-danger"></span>
                                     </div>
                                     <div class=" my-2 boxinfo">
-                                        <input type="text"  placeholder="Enter Number of copieees" name="ncopy">
+                                        <input type="text"  placeholder="Enter Your age" name="age">
                                         <span id="userNumMess" class="text-danger"></span>
                                     </div>
-                                    
-                                    <div class="my-2 d-flex" >
-                                        <input type="submit" class="btn btn-sm btn-outline-danger btnSin px-5 font-weight-bolder mt-3" value="ADD book" name="add" required>
+                                    <div class="my-2 boxinfo" >
+                                        <input type="Password" placeholder="Enter Your Password" name="userpass" id="userpass" autocomplete="off" >
+                                        <span id="userpassMess" class="text-danger"></span>
                                     </div>
-                                    
+                                    <div class="my-2 d-flex" >
+                                        <input type="submit" class="btn btn-sm btn-outline-danger btnSin px-5 font-weight-bolder mt-3" value="SignUp" name="signup" required>
+                                    </div>
+                                    <div class="container  Loginuserfooter">
+                                        <p class="text-muted my-4">If You Have an Account You can <a href="#login"  data-toggle="modal" data-dismiss="modal" aria-label="Close" class="text-danger">Login</a></p>
+                                    </div>
                                 </div>
                             </form>
 
@@ -105,43 +175,26 @@ else{
  echo"Connected Successfully";
 }
 
-
-          if(isset($_POST['delete'])){
-            $on1=$_POST['isbn'];
-            $query1 = "DELETE FROM tbl_book WHERE isbn='$on1'";
-            $data=mysqli_query($cont,$query1);
-            if($data == TRUE)
-            {
-                echo "<script>alert('Data Deleted successfully..!');window.location='';</script>";   
-            }
-	else{echo mysqli_error($cont);}
-            
-        
-        }
-            
-        
-
-if(isset($_POST['add'])){
-	$name=$_POST['bookName'];
-	$pbname=$_POST['pbname'];
-    $pbdate=$_POST['pbdate'];
-    $sub=$_POST['sub'];
-    $edition=$_POST['edition'];
-    $isbn=$_POST['isbn'];
-    $ncopy=$_POST['ncopy'];
-    
-	if($name=="" || $pbname=="" || $pbdate=="" || $edition==""  || $isbn==""  || $ncopy=="" || $sub==""  ){
+if(isset($_POST['signup'])){
+	$name=$_POST['userName'];
+	$email=$_POST['userEmail'];
+	$mobile=$_POST['userNum'];
+    $address=$_POST['userAdd'];
+    $str=$_POST['street'];
+    $city=$_POST['city'];
+    $age=$_POST['age'];
+	$pass=$_POST['userpass'];
+	if($name=="" || $email=="" || $mobile=="" || $address==""  || $str==""  || $city==""  || $age=="" || $pass==""){
 		echo "All fields should be filled.Either one or many fields are empty.";
 		}
-else{
-	$inst="INSERT INTO tbl_book(name,pbname,pbdate,sub,edition,isbn,ncopy) VALUES('$name','$pbname','$pbdate','$sub','$edition','$isbn','$ncopy')"; 
+
+	$inst="INSERT INTO tbl_user(name,email,mobile,address,street,city,age,pass) VALUES('$name','$email','$mobile','$address','$str','$city','$age','$pass')"; 
 	$data=mysqli_query($cont,$inst);
 	if($data == TRUE)
             {
                 echo "<script>alert('Data updated successfully..!');window.location='';</script>";   
             }
 	else{echo mysqli_error($cont);}
-}
 }
 ?>
 
